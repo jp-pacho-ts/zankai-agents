@@ -16,3 +16,10 @@ test('styled output remains readable when color is removed',()=>{
  assert.ok(lines.join('\n').includes('\x1b[36m'));
  assert.ok(terminalText(lines.join('\n')).includes('STEP 2 OF 7'));
 });
+
+test('single-screen rendering clears the viewport only when explicitly enabled',()=>{
+ const lines=[]; const ui=createWizardUI({write:line=>lines.push(line),color:false,unicode:false,clearScreen:false});
+ ui.screen('Your AI planner','One focused question.');
+ assert.ok(lines.join('\n').includes('AI agents by jp-pacho-ts'));
+ assert.ok(!lines.join('\n').includes('\x1b[2J'));
+});

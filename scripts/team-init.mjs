@@ -6,7 +6,7 @@ import { stdin, stdout } from 'node:process';
 import { ROOT, TEAM_DIR, UNINITIALIZED, ensureKnownOptions, fail, isDirectExecution, parseArgs, readJson, readText, relative, updateBoard, writeText } from './team-lib.mjs';
 
 import { createWizardUI } from './zankai-terminal.mjs';
-import { collectProjectAnswers } from './zankai-wizard.mjs';
+import { collectInitAnswers } from './zankai-conversation.mjs';
 import { prepareWorkspace } from './zankai-workspace.mjs';
 
 function projectField(value) {
@@ -25,10 +25,12 @@ function replaceOnlyTemplate(file, content) {
 
 export async function runInit(args) {
   const { positional, options } = args;
-  ensureKnownOptions(options, ['name', 'description', 'requirements', 'users', 'features', 'stack', 'conventions', 'constraints', 'yes']);
+  ensureKnownOptions(options, ['name', 'description', 'requirements', 'users', 'features', 'stack', 'conventions', 'constraints', 'yes', 'ai']);
   if (positional.length) {
     fail('Usage: npm run zankai:init -- [--name "Project name"] [--description "..."] [--requirements "..."] [--users "..."] [--features "..."] [--stack "..."] [--conventions "..."] [--constraints "..."]');
   }
+  if(options.ai && !['codex','off'].includes(options.ai)) fail('Choose --ai codex or --ai off.');
+  if(options.ai === 'codex' && (!stdin.isTTY || options.yes)) fail('AI planning requires an interactive terminal. Remove --yes, or use --ai off.');
   const pkgPath = path.join(ROOT, 'package.json');
   const pkg = fs.existsSync(pkgPath) ? readJson(pkgPath) : {};
   const suggestedName = pkg.name && pkg.name !== 'zankai-agents' && pkg.name !== 'ai-web-development-team-template' ? pkg.name : path.basename(ROOT);
@@ -44,10 +46,21 @@ export async function runInit(args) {
   };
   if (stdin.isTTY && !options.yes) {
     const prompt = createInterface({ input: stdin, output: stdout });
+    const controller = new AbortController();
+    const cancel = () => controller.abort();
+    prompt.on('SIGINT',cancel);
+    const ask = label => new Promise((resolve,reject)=>{
+      const abort=()=>reject(new Error('Setup cancelled. No project files were written.'));
+      const closed=()=>{controller.abort();abort();};
+      controller.signal.addEventListener('abort',abort,{once:true});
+      prompt.once('close',closed);
+      prompt.question(label).then(resolve,reject).finally(()=>{controller.signal.removeEventListener('abort',abort);prompt.removeListener('close',closed);});
+    });
     try {
-      values = await collectProjectAnswers(values, suggestedName, label => prompt.question(label));
+      values = await collectInitAnswers(values, suggestedName, ask, {aiMode:options.ai,signal:controller.signal});
       if (!values) { console.log('Setup cancelled. No project files were written.'); return; }
     } finally {
+      prompt.removeListener('SIGINT',cancel);
       prompt.close();
     }
   }
@@ -76,6 +89,10 @@ ${values.features}
 ## System Requirements
 
 ${values.requirements}
+
+## Suggested Assumptions
+
+${values.assumptions?.length ? values.assumptions.map(item => '- Unconfirmed: ' + projectField(item)).join('\n') : 'None recorded.'}
 
 ## Standard Stack & Deviations
 

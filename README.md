@@ -403,3 +403,9 @@ Follow [the Git commit convention](docs/COMMIT_CONVENTION.md) when contributing 
 ## Guided project setup
 
 Run `zankai init` for numbered questions with examples. Press Enter for optional defaults, or type `/cancel` to stop. Choose an architect-recommended stack, Next.js, React/Vite, or your own stack. Review the brief and choose Yes, Edit, or Cancel before files are written. Existing custom briefs are preserved. Run `zankai kickoff` afterward to print a coordinator prompt ready to paste into your AI coding tool.
+
+## Conversational AI setup (source revision)
+
+`zankai init` now begins with an AI/manual choice. Codex assistance uses your installed, authenticated CLI to understand your idea, ask one focused follow-up at a time, and propose a brief for review. Suggestions remain labeled assumptions until confirmed. Use `/review`, `/manual`, or `/cancel` during the conversation. Each question replaces the previous screen; a thinking spinner appears during provider calls. Branding: AI agents by jp-pacho-ts.
+
+Use `zankai init --ai off` for manual questions, or `--ai codex` for AI planning. Provider failure offers retry, manual continuation or cancellation. No implementation agents are launched. The updated source needs a new npm release before registry users receive it.

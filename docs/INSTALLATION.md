@@ -183,3 +183,11 @@ Verify the tarball contains the CLI and clean templates, but excludes credential
 ## Guided setup in the next revision
 
 The source initializer now includes examples, stack choices and a Yes/Edit/Cancel review. Run `zankai kickoff` afterward to print a ready-to-paste planning prompt. This revision must be published before npm users receive these changes. Existing customized project briefs are preserved; edit `.team/PROJECT.md` to revise an initialized project.
+
+## AI-assisted initialization (source revision)
+
+Run `zankai init` and choose Codex AI assistance or manual setup. The AI asks one follow-up at a time and proposes an editable brief. Use `/review` to finish early, `/manual` to switch, or `/cancel` to leave without saving. Suggested assumptions are labeled and saved separately.
+
+AI mode requires an installed, authenticated Codex CLI supporting `exec`, `--output-schema`, `--ephemeral`, and `--ignore-user-config`. It sends your answers through that provider and uses your account quota/billing. It runs planning in a temporary read-only workspace, not your project. Antigravity automation is not integrated yet.
+
+Use `zankai init --ai off` for manual setup, or `--ai codex` to select AI directly. Noninteractive initialization with `--yes` remains manual. Interactive terminals redraw one screen per question; AI thinking uses a spinner. Piped output and `NO_COLOR` remain supported. This revision is not published yet.
