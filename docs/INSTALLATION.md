@@ -4,9 +4,29 @@ This guide uses PowerShell on Windows. Replace YOUR_USERNAME with your GitHub ac
 
 ## What is available today
 
-The folder is named zankai-agents. The package is named zankai-agents, is private, and has no standalone zankai executable. Use the existing zankai:* scripts today. The interactive Zankai wizard, live dashboard and parallel coordination manager are planned, not implemented.
+The package now provides a zankai executable. Install a tested local tarball or, after the changes are pushed, install from GitHub. It has not been published to npm. Registry name availability has not been verified.
 
-Uploading source to GitHub does not publish an npm package. Do not run npm install zankai yet: ownership and availability of that registry name have not been verified.
+From the source folder, build the package:
+
+```powershell
+npm pack
+npm install -g ./zankai-agents-1.0.0.tgz
+```
+
+Then open any project directory, including one with no package.json:
+
+```powershell
+zankai init
+zankai status
+```
+
+The initializer asks for name, website/system description, system requirements, users, features, stack deviations and constraints. It creates team context and clean workflow assets while preserving customized files. It does not scaffold a website or launch providers. Status reports routing and task metadata; live agent tracking and the dashboard remain planned.
+
+Once this executable revision is pushed, GitHub installation will be:
+
+```powershell
+npm install -g git+https://github.com/jp-pacho-ts/zankai-agents.git
+```
 
 ## Requirements
 
@@ -110,11 +130,11 @@ npm run zankai:show -- T-001
 
 Current zankai:status reports configured routing, provider command detection and task metadata. It does not establish whether agents are actively running. Multiple terminals need explicit task ownership; use separate Git worktrees for concurrent implementation and agree on shared API contracts before FE/BE work.
 
-## Future installable CLI: not available yet
+## Future npm registry release
 
-Before these commands become supported, implement the wizard and dashboard, add a package.json bin entry for zankai with a Node shebang, bundle clean templates, separate installed asset paths from target project paths, and test the packed package in a temporary consumer project.
+The executable and bundled assets are implemented. Registry publication still requires release testing, package ownership and explicit publication.
 
-Proposed GitHub package installation after that work:
+Local project installation from GitHub after this revision is pushed:
 
 ```powershell
 npm install --save-dev github:YOUR_USERNAME/zankai-agents
@@ -149,7 +169,7 @@ Verify the tarball contains the CLI and clean templates, but excludes credential
 
 - Missing npm: install Node.js, then reopen PowerShell.
 - Missing zankai:* script: run the command inside the cloned toolkit or initialized target project containing those scripts.
-- Missing zankai executable: the current release has no bin entry; use zankai:* commands.
+- Missing zankai executable: install the executable revision globally, or use npx --no-install zankai from a project where it is installed. Reopen the terminal if your npm global bin folder was added to PATH.
 - Provider not detected: confirm its configured executable is installed and available on PATH. Detection is not authentication or a health check.
 - Permission denied cloning/pushing: check repository access and GitHub authentication.
 - Folder rename blocked: close applications and terminals using that directory.

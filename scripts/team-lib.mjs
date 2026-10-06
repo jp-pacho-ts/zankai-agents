@@ -245,7 +245,9 @@ export function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (!arg.startsWith('--')) { positional.push(arg); continue; }
-    const [rawName, inlineValue] = arg.slice(2).split('=', 2);
+    const separator = arg.indexOf('=');
+    const rawName = separator < 0 ? arg.slice(2) : arg.slice(2, separator);
+    const inlineValue = separator < 0 ? undefined : arg.slice(separator + 1);
     if (!/^[a-z][a-z-]*$/.test(rawName)) fail(`Invalid option: ${arg}`);
     if (inlineValue !== undefined) { options[rawName] = inlineValue; continue; }
     if (['yes', 'ready', 'new', 'pass', 'fail', 'force'].includes(rawName)) { options[rawName] = true; continue; }

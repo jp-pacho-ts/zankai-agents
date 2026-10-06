@@ -5,6 +5,8 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 import { ROOT, TEAM_DIR, UNINITIALIZED, ensureKnownOptions, fail, isDirectExecution, parseArgs, readJson, readText, relative, updateBoard, writeText } from './team-lib.mjs';
 
+import { prepareWorkspace } from './zankai-workspace.mjs';
+
 function projectField(value) {
   return String(value ?? '').replace(/[\r\n]+/g, ' ').trim();
 }
@@ -21,9 +23,9 @@ function replaceOnlyTemplate(file, content) {
 
 export async function runInit(args) {
   const { positional, options } = args;
-  ensureKnownOptions(options, ['name', 'description', 'users', 'features', 'stack', 'conventions', 'constraints', 'yes']);
+  ensureKnownOptions(options, ['name', 'description', 'requirements', 'users', 'features', 'stack', 'conventions', 'constraints', 'yes']);
   if (positional.length) {
-    fail('Usage: npm run zankai:init -- [--name "Project name"] [--description "..."] [--users "..."] [--features "..."] [--stack "..."] [--conventions "..."] [--constraints "..."]');
+    fail('Usage: npm run zankai:init -- [--name "Project name"] [--description "..."] [--requirements "..."] [--users "..."] [--features "..."] [--stack "..."] [--conventions "..."] [--constraints "..."]');
   }
   const pkgPath = path.join(ROOT, 'package.json');
   const pkg = fs.existsSync(pkgPath) ? readJson(pkgPath) : {};
@@ -31,6 +33,7 @@ export async function runInit(args) {
   const values = {
     name: projectField(options.name),
     description: projectField(options.description),
+    requirements: projectField(options.requirements),
     users: projectField(options.users),
     features: projectField(options.features),
     stack: projectField(options.stack),
@@ -42,7 +45,8 @@ export async function runInit(args) {
     try {
       const questions = [
         ['name', 'Project name', suggestedName],
-        ['description', 'Short description', ''],
+        ['description', 'Describe the website or system you want to build', ''],
+        ['requirements', 'System requirements (workflows, roles, integrations, security or performance)', 'To be clarified during planning'],
         ['users', 'Target users', 'General web users'],
         ['features', 'Initial features', 'Core application foundation'],
         ['stack', 'Stack deviations from Next.js/TypeScript/React/shadcn/ui/Tailwind/Prisma/PostgreSQL/npm', 'None recorded'],
@@ -59,6 +63,7 @@ export async function runInit(args) {
   if (!values.name || !values.description) {
     fail('Project name and description are required. In a noninteractive shell, pass --name and --description.');
   }
+  values.requirements ||= 'To be clarified during planning';
   values.users ||= 'General web users';
   values.features ||= 'Core application foundation';
   values.stack ||= 'None recorded';
@@ -76,6 +81,10 @@ export async function runInit(args) {
 ## Initial Features & Goals
 
 ${values.features}
+
+## System Requirements
+
+${values.requirements}
 
 ## Standard Stack & Deviations
 
@@ -125,6 +134,7 @@ Before \`TEAM-FE\`, \`TEAM-BE\`, and \`TEAM-DATA\` execute in parallel on a mult
 Record consequential decisions in \`.team/decisions/ADR-NNN-*.md\` using \`.team/templates/ADR.md\`.
 `;
 
+  prepareWorkspace(ROOT);
   fs.mkdirSync(TEAM_DIR, { recursive: true });
   replaceOnlyTemplate(path.join(TEAM_DIR, 'PROJECT.md'), project);
   replaceOnlyTemplate(path.join(TEAM_DIR, 'ARCHITECTURE.md'), architecture);

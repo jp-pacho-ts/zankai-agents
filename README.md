@@ -1,5 +1,9 @@
 # `zankai-agents` — Human-Controlled Multi-Agent CLI Development Team
 
+## Executable CLI
+
+Build and install the current local package with `npm pack` then `npm install -g ./zankai-agents-1.0.0.tgz`. Run `zankai init` in your project directory, followed by `zankai status`. No existing package.json is required. The package has not been published to npm; the live dashboard is still planned. See [installation instructions](docs/INSTALLATION.md).
+
 A reusable, filesystem-based multi-agent web development team template for **Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and `npm`**.
 
 ---

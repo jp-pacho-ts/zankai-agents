@@ -15,9 +15,31 @@
     "zankai:handoff": "node scripts/team-handoff.mjs",
     "zankai:qa": "node scripts/team-qa.mjs",
     "zankai:route": "node scripts/team-route.mjs",
-    "zankai:copy": "node scripts/team-copy.mjs"
+    "zankai:copy": "node scripts/team-copy.mjs",
+    "zankai": "node bin/zankai.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "bin": {
+    "zankai": "bin/zankai.mjs"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "templates/",
+    "config/ai-team.json",
+    ".team/roles/",
+    ".team/templates/",
+    "prompts/",
+    "docs/INSTALLATION.md",
+    ".team/ROUTING.md",
+    ".team/CONVENTIONS.md",
+    "docs/COMMIT_CONVENTION.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jp-pacho-ts/zankai-agents.git"
   }
 }
