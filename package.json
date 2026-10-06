@@ -1,8 +1,7 @@
 {
   "name": "zankai-agents",
   "version": "1.0.0",
-  "private": true,
-  "description": "Human-controlled multi-agent CLI web development team template",
+  "description": "Project setup and task coordination CLI for Codex and Antigravity",
   "type": "module",
   "scripts": {
     "zankai:init": "node scripts/team-init.mjs",
@@ -41,5 +40,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jp-pacho-ts/zankai-agents.git"
+  },
+  "license": "UNLICENSED",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
