@@ -1,6 +1,6 @@
 {
   "name": "zankai-agents",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Project setup and task coordination CLI for Codex and Antigravity",
   "type": "module",
   "scripts": {
