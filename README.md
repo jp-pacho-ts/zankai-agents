@@ -399,3 +399,7 @@ See [the owner and user installation guide](docs/INSTALLATION.md) for GitHub upl
 
 Follow [the Git commit convention](docs/COMMIT_CONVENTION.md) when contributing changes.
 
+
+## Guided project setup
+
+Run `zankai init` for numbered questions with examples. Press Enter for optional defaults, or type `/cancel` to stop. Choose an architect-recommended stack, Next.js, React/Vite, or your own stack. Review the brief and choose Yes, Edit, or Cancel before files are written. Existing custom briefs are preserved. Run `zankai kickoff` afterward to print a coordinator prompt ready to paste into your AI coding tool.

@@ -33,6 +33,11 @@ test('installed tarball initializes an empty workspace and preserves custom file
     assert.ok(fs.existsSync(path.join(workspace,'.team','roles','backend.md')));
     assert.equal(fs.existsSync(path.join(workspace,'package.json')),false);
     assert.equal(run([cli,'status'],workspace).status,0);
+    const kickoff=run([cli,'kickoff'],workspace);
+    assert.equal(kickoff.status,0,kickoff.stderr);
+    assert.ok(kickoff.stdout.includes('.team/PROJECT.md'));
+    assert.ok(!kickoff.stdout.includes('<Project Name>'));
+    assert.ok(!kickoff.stdout.includes('.agents/skills/'));
     fs.writeFileSync(path.join(workspace,'.team','PROJECT.md'),'Custom project brief');
     fs.writeFileSync(path.join(workspace,'package.json'),'{"name":"existing","scripts":{"build":"custom"}}');
     assert.equal(run([cli,'init','--yes','--name','Second','--description','Second run'],workspace).status,0);

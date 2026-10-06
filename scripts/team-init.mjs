@@ -5,6 +5,8 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 import { ROOT, TEAM_DIR, UNINITIALIZED, ensureKnownOptions, fail, isDirectExecution, parseArgs, readJson, readText, relative, updateBoard, writeText } from './team-lib.mjs';
 
+import { createWizardUI } from './zankai-terminal.mjs';
+import { collectProjectAnswers } from './zankai-wizard.mjs';
 import { prepareWorkspace } from './zankai-workspace.mjs';
 
 function projectField(value) {
@@ -30,7 +32,7 @@ export async function runInit(args) {
   const pkgPath = path.join(ROOT, 'package.json');
   const pkg = fs.existsSync(pkgPath) ? readJson(pkgPath) : {};
   const suggestedName = pkg.name && pkg.name !== 'zankai-agents' && pkg.name !== 'ai-web-development-team-template' ? pkg.name : path.basename(ROOT);
-  const values = {
+  let values = {
     name: projectField(options.name),
     description: projectField(options.description),
     requirements: projectField(options.requirements),
@@ -43,19 +45,8 @@ export async function runInit(args) {
   if (stdin.isTTY && !options.yes) {
     const prompt = createInterface({ input: stdin, output: stdout });
     try {
-      const questions = [
-        ['name', 'Project name', suggestedName],
-        ['description', 'Describe the website or system you want to build', ''],
-        ['requirements', 'System requirements (workflows, roles, integrations, security or performance)', 'To be clarified during planning'],
-        ['users', 'Target users', 'General web users'],
-        ['features', 'Initial features', 'Core application foundation'],
-        ['stack', 'Stack deviations from Next.js/TypeScript/React/shadcn/ui/Tailwind/Prisma/PostgreSQL/npm', 'None recorded'],
-        ['conventions', 'Repository conventions', 'None recorded'],
-        ['constraints', 'Important constraints', 'None recorded']
-      ];
-      for (const [key, label, fallback] of questions) {
-        if (!values[key]) values[key] = projectField(await prompt.question(`${label}${fallback ? ` [${fallback}]` : ''}: `)) || fallback;
-      }
+      values = await collectProjectAnswers(values, suggestedName, label => prompt.question(label));
+      if (!values) { console.log('Setup cancelled. No project files were written.'); return; }
     } finally {
       prompt.close();
     }
@@ -88,7 +79,7 @@ ${values.requirements}
 
 ## Standard Stack & Deviations
 
-Default team stack: Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and \`npm\`.
+Web stack preset: Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and \`npm\`. The selected preference below takes precedence.
 
 - **Stack Deviations:** ${values.stack}
 
@@ -113,7 +104,7 @@ ${values.description}
 
 ## Technology Stack
 
-Default stack assumption: Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and \`npm\`.
+Web stack preset: Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and \`npm\`. Resolve actual choices from the preference below and existing project.
 Stack deviations: ${values.stack}
 
 ## System Boundaries
@@ -140,7 +131,7 @@ Record consequential decisions in \`.team/decisions/ADR-NNN-*.md\` using \`.team
   replaceOnlyTemplate(path.join(TEAM_DIR, 'ARCHITECTURE.md'), architecture);
   updateBoard();
   console.log('Updated .team/BOARD.md task table.');
-  console.log('Next step: open TEAM-COORD and run the prompt in prompts/PROJECT-KICKOFF.md.');
+  createWizardUI().done();
 }
 
 if (isDirectExecution(import.meta.url)) {

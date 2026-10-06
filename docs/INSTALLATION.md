@@ -179,3 +179,7 @@ Verify the tarball contains the CLI and clean templates, but excludes credential
 - [GitHub: adding locally hosted code](https://docs.github.com/en/migrations/importing-source-code/using-the-command-line-to-import-source-code/adding-locally-hosted-code-to-github)
 - [npm installation, including GitHub packages](https://docs.npmjs.com/cli/v11/commands/npm-install/)
 - [npm package configuration: bin, files and private](https://docs.npmjs.com/cli/v11/configuring-npm/package-json/)
+
+## Guided setup in the next revision
+
+The source initializer now includes examples, stack choices and a Yes/Edit/Cancel review. Run `zankai kickoff` afterward to print a ready-to-paste planning prompt. This revision must be published before npm users receive these changes. Existing customized project briefs are preserved; edit `.team/PROJECT.md` to revise an initialized project.
