@@ -1,0 +1,23 @@
+{
+  "name": "zankai-agents",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Human-controlled multi-agent CLI web development team template",
+  "type": "module",
+  "scripts": {
+    "zankai:init": "node scripts/team-init.mjs",
+    "zankai:status": "node scripts/team-status.mjs",
+    "zankai:board": "node scripts/team-board.mjs",
+    "zankai:new": "node scripts/team-task.mjs new",
+    "zankai:show": "node scripts/team-show.mjs",
+    "zankai:task": "node scripts/team-task.mjs task",
+    "zankai:assign": "node scripts/team-task.mjs assign",
+    "zankai:handoff": "node scripts/team-handoff.mjs",
+    "zankai:qa": "node scripts/team-qa.mjs",
+    "zankai:route": "node scripts/team-route.mjs",
+    "zankai:copy": "node scripts/team-copy.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

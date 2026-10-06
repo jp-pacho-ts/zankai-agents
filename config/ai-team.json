@@ -1,0 +1,81 @@
+{
+  "version": 2,
+  "packageManager": "npm",
+  "boardWriter": "coordinator",
+  "maxRecommendedParallelWriteTasks": 2,
+  "providers": {
+    "codex": { "name": "Codex", "command": "codex" },
+    "antigravity": { "name": "Antigravity", "command": "agy" }
+  },
+  "models": {
+    "codex": { "fast": "gpt-6-luna", "standard": "gpt-6-sol", "deep": "gpt-6-sol" },
+    "antigravity": { "fast": null, "standard": null, "deep": null }
+  },
+  "effort": {
+    "codex": { "fast": "low", "standard": "medium", "deep": "high" },
+    "antigravity": { "fast": null, "standard": null, "deep": null }
+  },
+  "roles": {
+    "coordinator": {
+      "terminal": "TEAM-COORD",
+      "primary": "antigravity",
+      "fallback": "codex",
+      "profile": "fast",
+      "ownedPaths": [".team/BOARD.md", ".team/PROJECT.md", ".team/tasks/**"]
+    },
+    "architect": {
+      "terminal": "TEAM-ARCH",
+      "primary": "codex",
+      "fallback": "antigravity",
+      "profile": "deep",
+      "ownedPaths": [".team/ARCHITECTURE.md", ".team/decisions/**"]
+    },
+    "frontend": {
+      "terminal": "TEAM-FE",
+      "primary": "antigravity",
+      "fallback": "codex",
+      "profile": "standard",
+      "ownedPaths": ["src/components/**", "src/app/**"]
+    },
+    "backend": {
+      "terminal": "TEAM-BE",
+      "primary": "codex",
+      "fallback": "antigravity",
+      "profile": "standard",
+      "ownedPaths": ["src/server/**", "src/app/api/**"]
+    },
+    "data": {
+      "terminal": "TEAM-DATA",
+      "primary": "antigravity",
+      "fallback": "codex",
+      "profile": "standard",
+      "ownedPaths": ["prisma/**"]
+    },
+    "qa": {
+      "terminal": "TEAM-QA",
+      "primary": "codex",
+      "fallback": "antigravity",
+      "profile": "standard",
+      "ownedPaths": []
+    }
+  },
+  "sharedFiles": [
+    "package.json",
+    "package-lock.json",
+    ".env.example",
+    "tsconfig.json",
+    "next.config.*",
+    "src/middleware.ts",
+    "src/types/**"
+  ],
+  "parallelismLevels": [
+    "SAFE PARALLEL",
+    "PARALLEL WITH ISOLATION",
+    "SEQUENTIAL / BLOCKED"
+  ],
+  "approvalLevels": {
+    "GREEN": "Proceed within task scope (normal implementation, tests, local refactors, type/a11y fixes).",
+    "YELLOW": "Investigate and propose, but inform Team Lead before broad execution (new significant dependency, API contract change, schema expansion beyond task, cross-module refactor, major config change).",
+    "RED": "Explicit Team Lead approval required before execution (destructive DB migration, deleting major functionality, auth architecture replacement, production deployment, force push, destructive Git operations, major architecture change)."
+  }
+}

@@ -390,3 +390,8 @@ npm run zankai:init
 
 See [the owner and user installation guide](docs/INSTALLATION.md) for GitHub upload, current project setup, and the planned npm CLI release.
 
+
+## Commit messages
+
+Follow [the Git commit convention](docs/COMMIT_CONVENTION.md) when contributing changes.
+
