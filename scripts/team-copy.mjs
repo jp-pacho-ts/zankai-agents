@@ -4,6 +4,9 @@ import path from 'node:path';
 import { BOARD_END, BOARD_START, ROOT, UNINITIALIZED, ensureKnownOptions, fail, isDirectExecution, parseArgs, readJson, writeText } from './team-lib.mjs';
 
 const COPY_DIRS = [
+  'bin',
+  'templates',
+  'docs',
   '.agents',
   '.codex',
   'config',

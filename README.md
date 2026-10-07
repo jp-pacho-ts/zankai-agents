@@ -2,7 +2,7 @@
 
 ## Executable CLI
 
-Build and install the current local package with `npm pack` then `npm install -g ./zankai-agents-1.0.0.tgz`. Run `zankai init` in your project directory, followed by `zankai status`. No existing package.json is required. The package has not been published to npm; the live dashboard is still planned. See [installation instructions](docs/INSTALLATION.md).
+Build and install the current local package with `npm pack` then `npm install -g ./zankai-agents-1.0.0.tgz`. Run `zankai init` in your project directory, followed by `zankai status`. No existing package.json is required. Install the published toolkit with npm install -g zankai-agents. Version 1.3.0 adds session monitoring, coordination checks and the dashboard. See [installation instructions](docs/INSTALLATION.md).
 
 A reusable, filesystem-based multi-agent web development team template for **Next.js, TypeScript, React, shadcn/ui, Tailwind CSS, Prisma, PostgreSQL, and `npm`**.
 
@@ -408,4 +408,8 @@ Run `zankai init` for numbered questions with examples. Press Enter for optional
 
 `zankai init` now begins with an AI/manual choice. Codex assistance uses your installed, authenticated CLI to understand your idea, ask one focused follow-up at a time, and propose a brief for review. Suggestions remain labeled assumptions until confirmed. Use `/review`, `/manual`, or `/cancel` during the conversation. Each question replaces the previous screen; a thinking spinner appears during provider calls. Branding: AI agents by jp-pacho-ts.
 
-Use `zankai init --ai off` for manual questions, or `--ai codex` for AI planning. Provider failure offers retry, manual continuation or cancellation. No implementation agents are launched. The updated source needs a new npm release before registry users receive it.
+Use `zankai init --ai off` for manual questions, or `--ai codex` for AI planning. Provider failure offers retry, manual continuation or cancellation. No implementation agents are launched. AI-assisted initialization is included starting with version 1.2.0.
+
+## Agent monitor and parallel work (source revision)
+
+Run `zankai dashboard` or `zankai status --watch` for the named-agent live view. Use `zankai check` before dispatch, `zankai worktree create` for isolation, and `zankai run` for explicitly launched Codex sessions with heartbeats. Antigravity sessions use explicit registration/activity reports. See [the monitoring guide](docs/AGENT_MONITORING.md) for complete commands and limitations. These features are included in version 1.3.0.

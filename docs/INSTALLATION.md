@@ -4,7 +4,7 @@ This guide uses PowerShell on Windows. Replace YOUR_USERNAME with your GitHub ac
 
 ## What is available today
 
-The package now provides a zankai executable. Install a tested local tarball or, after the changes are pushed, install from GitHub. It has not been published to npm. Registry name availability has not been verified.
+The package now provides a zankai executable. Install a tested local tarball or, after the changes are pushed, install from GitHub. The package is published as zankai-agents. Install globally with npm install -g zankai-agents, then run zankai init.
 
 From the source folder, build the package:
 
@@ -182,7 +182,7 @@ Verify the tarball contains the CLI and clean templates, but excludes credential
 
 ## Guided setup in the next revision
 
-The source initializer now includes examples, stack choices and a Yes/Edit/Cancel review. Run `zankai kickoff` afterward to print a ready-to-paste planning prompt. This revision must be published before npm users receive these changes. Existing customized project briefs are preserved; edit `.team/PROJECT.md` to revise an initialized project.
+The source initializer now includes examples, stack choices and a Yes/Edit/Cancel review. Run `zankai kickoff` afterward to print a ready-to-paste planning prompt. Guided setup is included in the published CLI. Existing customized project briefs are preserved; edit `.team/PROJECT.md` to revise an initialized project.
 
 ## AI-assisted initialization (source revision)
 
@@ -190,4 +190,4 @@ Run `zankai init` and choose Codex AI assistance or manual setup. The AI asks on
 
 AI mode requires an installed, authenticated Codex CLI supporting `exec`, `--output-schema`, `--ephemeral`, and `--ignore-user-config`. It sends your answers through that provider and uses your account quota/billing. It runs planning in a temporary read-only workspace, not your project. Antigravity automation is not integrated yet.
 
-Use `zankai init --ai off` for manual setup, or `--ai codex` to select AI directly. Noninteractive initialization with `--yes` remains manual. Interactive terminals redraw one screen per question; AI thinking uses a spinner. Piped output and `NO_COLOR` remain supported. This revision is not published yet.
+Use `zankai init --ai off` for manual setup, or `--ai codex` to select AI directly. Noninteractive initialization with `--yes` remains manual. Interactive terminals redraw one screen per question; AI thinking uses a spinner. Piped output and `NO_COLOR` remain supported. AI-assisted setup is included starting with version 1.2.0.

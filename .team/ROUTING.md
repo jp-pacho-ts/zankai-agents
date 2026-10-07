@@ -37,7 +37,7 @@ TEAM-QA      WAITING
 
 - Not every terminal needs to be open or running simultaneously.
 - Six terminal identities do **not** mean six agents constantly run in the background.
-- There is **no continuous polling** and **no hidden autonomous spawning**. The Team Lead manually starts a terminal only when `TEAM-COORD` (or the Team Lead) identifies a `READY` task to run.
+- There is **no background AI polling** and **no hidden autonomous spawning**. An explicitly opened Zankai dashboard refreshes local runtime records; an explicitly launched Codex session reports process heartbeats. The Team Lead manually starts a terminal only when `TEAM-COORD` (or the Team Lead) identifies a `READY` task to run.
 
 ## 4. Capability Profiles (`FAST`, `STANDARD`, `DEEP`)
 

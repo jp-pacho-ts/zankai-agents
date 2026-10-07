@@ -20,7 +20,16 @@ test('installed tarball initializes an empty workspace and preserves custom file
     const install=path.join(temp,'installed');
     const result=run([process.env.npm_execpath,'install','--prefix',install,'--ignore-scripts','--no-audit','--no-fund',path.join(temp,info.filename)],temp);
     assert.equal(result.status,0,result.stderr);
-    const cli=path.join(install,'node_modules','zankai-agents','bin','zankai.mjs');
+    const packageRoot=path.join(install,'node_modules','zankai-agents');
+    const cli=path.join(packageRoot,'bin','zankai.mjs');
+    const copiedRoot=path.join(temp,'Copied toolkit');
+    const copy=run([path.join(packageRoot,'scripts','team-copy.mjs'),copiedRoot],packageRoot);
+    assert.equal(copy.status,0,copy.stderr);
+    const copiedCLI=path.join(copiedRoot,'bin','zankai.mjs');
+    assert.equal(run([copiedCLI,'init','--yes','--name','Copied','--description','Copied toolkit verification'],copiedRoot).status,0);
+    const copiedStatus=run([copiedCLI,'status','--json'],copiedRoot);
+    assert.equal(copiedStatus.status,0,copiedStatus.stderr);
+    assert.equal(JSON.parse(copiedStatus.stdout).agents.length,6);
     const workspace=path.join(temp,'Empty project'); fs.mkdirSync(workspace);
     assert.equal(run([cli,'--help'],workspace).status,0);
     const invalid=run([cli,'init','--yes'],workspace);
@@ -50,4 +59,10 @@ test('installed tarball initializes an empty workspace and preserves custom file
     }
     assert.equal(run([cli,'unknown'],workspace).status,1);
   } finally { fs.rmSync(temp,{recursive:true,force:true}); }
+});
+
+test('boolean reporting flags cannot become truthy strings',()=>{
+ assert.equal(parseArgs(['--read-only=false']).options['read-only'],false);
+ assert.equal(parseArgs(['--watch=true']).options.watch,true);
+ assert.throws(()=>parseArgs(['--read-only=invalid']),/Boolean option/);
 });

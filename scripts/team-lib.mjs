@@ -249,8 +249,14 @@ export function parseArgs(argv) {
     const rawName = separator < 0 ? arg.slice(2) : arg.slice(2, separator);
     const inlineValue = separator < 0 ? undefined : arg.slice(separator + 1);
     if (!/^[a-z][a-z-]*$/.test(rawName)) fail(`Invalid option: ${arg}`);
-    if (inlineValue !== undefined) { options[rawName] = inlineValue; continue; }
-    if (['yes', 'ready', 'new', 'pass', 'fail', 'force'].includes(rawName)) { options[rawName] = true; continue; }
+    if (inlineValue !== undefined) {
+      if (['yes','ready','new','pass','fail','force','json','watch','read-only'].includes(rawName)) {
+        if(!['true','false'].includes(inlineValue)) fail('Boolean option --'+rawName+' accepts true or false.');
+        options[rawName] = inlineValue === 'true';
+      } else options[rawName] = inlineValue;
+      continue;
+    }
+    if (['yes', 'ready', 'new', 'pass', 'fail', 'force', 'json', 'watch', 'read-only'].includes(rawName)) { options[rawName] = true; continue; }
     const value = argv[++i];
     if (value === undefined || value.startsWith('--')) fail(`Missing value for --${rawName}.`);
     options[rawName] = value;

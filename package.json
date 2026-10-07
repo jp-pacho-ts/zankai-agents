@@ -1,11 +1,11 @@
 {
   "name": "zankai-agents",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Project setup and task coordination CLI for Codex and Antigravity",
   "type": "module",
   "scripts": {
     "zankai:init": "node scripts/team-init.mjs",
-    "zankai:status": "node scripts/team-status.mjs",
+    "zankai:status": "node bin/zankai.mjs status",
     "zankai:board": "node scripts/team-board.mjs",
     "zankai:new": "node scripts/team-task.mjs new",
     "zankai:show": "node scripts/team-show.mjs",
@@ -16,7 +16,9 @@
     "zankai:route": "node scripts/team-route.mjs",
     "zankai:copy": "node scripts/team-copy.mjs",
     "zankai": "node bin/zankai.mjs",
-    "test": "node --test test/*.test.mjs"
+    "test": "node --test test/*.test.mjs",
+    "status": "node bin/zankai.mjs dashboard",
+    "zankai:dashboard": "node bin/zankai.mjs dashboard"
   },
   "engines": {
     "node": ">=20"
@@ -35,7 +37,8 @@
     "docs/INSTALLATION.md",
     ".team/ROUTING.md",
     ".team/CONVENTIONS.md",
-    "docs/COMMIT_CONVENTION.md"
+    "docs/COMMIT_CONVENTION.md",
+    "docs/AGENT_MONITORING.md"
   ],
   "repository": {
     "type": "git",
